@@ -2,6 +2,8 @@ import pickle
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
 # TODO: add necessary import
+from sklearn.ensemble  import RandomForestClassifier as RFC
+
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -18,9 +20,20 @@ def train_model(X_train, y_train):
     -------
     model
         Trained machine learning model.
+
+    This function utilizes RandomForestClassifier (as RFC)
+    to model and fit the two parameters passed to the function
+    to the training model and returns that training model.
+
+    Note: 
+     - As the provided definition does not include a variables
+       for any modified values, all default settings are being used for RFC.
     """
     # TODO: implement the function
-    pass
+
+    training_model = RFC()
+    training_model.fit(X_train, y_train)
+    return training_model
 
 
 def compute_model_metrics(y, preds):
@@ -58,9 +71,16 @@ def inference(model, X):
     -------
     preds : np.array
         Predictions from the model.
+
+    Note:
+     - The predict() function accepts only a single argument
+       which is the data to be tested.
     """
     # TODO: implement the function
-    pass
+
+    predictions = model.predict(X)
+    return predictions
+
 
 def save_model(model, path):
     """ Serializes model to a file.
@@ -71,14 +91,25 @@ def save_model(model, path):
         Trained machine learning model or OneHotEncoder.
     path : str
         Path to save pickle file.
+    
+    Note:
+     - 'wb' opens the file in binary write mode. This ensures if the file
+        does not already exist it is created and if it does exist it is overwritten.
+     - As the definition does not provide a return feature, no return function was included.
     """
     # TODO: implement the function
-    pass
+
+    with open (path, 'wb') as file:
+        pickle.dump(model, file)
+
 
 def load_model(path):
     """ Loads pickle file from `path` and returns it."""
     # TODO: implement the function
-    pass
+
+    with open(path, 'rb') as file:
+        data = pickle.load(file)
+    return data
 
 
 def performance_on_categorical_slice(
@@ -118,11 +149,21 @@ def performance_on_categorical_slice(
 
     """
     # TODO: implement the function
+    # Creating the slice to be used.
+    slice = data[data[column_name] == slice_value]
+
+
     X_slice, y_slice, _, _ = process_data(
         # your code here
         # for input data, use data in column given as "column_name", with the slice_value 
         # use training = False
+        slice,
+        categorical_features=categorical_features,
+        label=label, 
+        training=False, 
+        encoder=encoder, 
+        lb=lb
     )
-    preds = None # your code here to get prediction on X_slice using the inference function
+    preds = inference(model, X_slice)
     precision, recall, fbeta = compute_model_metrics(y_slice, preds)
     return precision, recall, fbeta
