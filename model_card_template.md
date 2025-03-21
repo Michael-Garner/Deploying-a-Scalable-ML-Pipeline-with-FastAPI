@@ -64,7 +64,11 @@ The training data was provided by the project and can be found in the data folde
 The data was split into a training dataset and a test dataset. The test dataset split was 20% of the overall dataset.
 
 ## Metrics
-_Please include the metrics used and your model's performance on those metrics._
+
+Metrics used for measurement are Precision, Recall, and F1 scores.
+- Precision: 0.7232
+- Recall: 0.6187
+- F1: 0.6669
 
 ## Ethical Considerations
 
