@@ -1,5 +1,7 @@
 import pytest
 # TODO: add necessary import
+import os
+import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from ml.model import train_model, compute_model_metrics
@@ -7,30 +9,26 @@ from ml.data import process_data
 
 
 # TODO: implement the first test. Change the function name and input as needed
-def data_shape_check_test_one():
+def test_data_shape_check():
     """
     This tests the data to make sure it is dimensional and is not an empty array.
     Process:
         Load data path.
-            If path invalid, throw error.
         Check data dimensionality.
             If size == 0, give message
     """
-    try:
-        data = pd.read_csv(os.path.join(os.getcwd(), "data", "census.csv"))
-    except:
-        print ("census.csv not found.")
+    dataframe = pd.read_csv(os.path.join(os.getcwd(), "data", "census.csv"))
     
-    if data.shape[0]==0:
+    if dataframe.shape[0]==0:
         print("This file contains no rows.")
-    elif data.shape[1]==0:
+    elif dataframe.shape[1]==0:
         print("This file contains no columns.")
     else:
         print("This file has both rows and columns. Carry on!")
 
 
 # TODO: implement the second test. Change the function name and input as needed
-def model_validity_check_test_two():
+def test_model_validity_check():
     """
     This test is designed to ensure a RandomForestClassifier model is created.
     Process:
@@ -39,7 +37,7 @@ def model_validity_check_test_two():
         Check to ensure model is a RandomForestClassifier.
     """
     test_x = np.random.rand(10,5)
-    test_y = np.random.randint(0,2,20)
+    test_y = np.random.randint(0,2,10)
     
     test_model = train_model(test_x, test_y)
 
@@ -50,7 +48,7 @@ def model_validity_check_test_two():
 
 
 # TODO: implement the third test. Change the function name and input as needed
-def model_metrics_check_test_three():
+def test_model_metrics_check():
     """
     This test is designed to run the metrics of a model and ensure they are in range.
     Process:
